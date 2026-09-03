@@ -59,7 +59,7 @@ const initProviders = () => {
   if (availableProviders.length === 0) {
     availableProviders.push({
       id: 'openrouter-default',
-      client: new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: process.env.OPENROUTER_API_KEY || '' }),
+      client: new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: process.env.OPENROUTER_API_KEY || 'YOUR_OPENROUTER_KEY_HERE' }),
       model: 'google/gemini-2.5-flash'
     });
   }
