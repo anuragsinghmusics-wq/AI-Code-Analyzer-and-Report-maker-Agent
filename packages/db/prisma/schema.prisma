@@ -1,0 +1,114 @@
+// Prisma Schema — AI Code Analyzer & Report Card Generator
+// Source: architecture.md §5 (Database Schema)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+
+// ── Models ───────────────────────────────────────────────────────────
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  githubId    String?  @unique
+  githubToken String?  
+  tier        String   @default("FREE")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  jobs        Job[]
+
+  @@map("users")
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      String    @default("PENDING")
+  inputType   String    @map("input_type")
+  inputHash   String    @map("input_hash") 
+  repoUrl     String?   @map("repo_url")
+  fileCount   Int       @default(0) @map("file_count")
+  languages   String    @default("[]")
+  completedAt DateTime? @map("completed_at")
+  durationMs  Int?      @map("duration_ms")
+  problemStatement String? @map("problem_statement")
+  error       String?
+  currentPhase String?  @map("current_phase")
+  report      Report?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([inputHash])
+  @@index([status])
+  @@index([createdAt])
+  @@map("jobs")
+}
+
+model Report {
+  id             String    @id @default(cuid())
+  jobId          String    @unique @map("job_id")
+  job            Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  summary        String
+  overallScore   Float     @map("overall_score")
+  grade          String
+  reportCard     String    @map("report_card")     
+  strengths      String    @default("[]")
+  weaknesses     String    @default("[]")
+  improvements   String                               
+  fileBreakdown  String    @map("file_breakdown")   
+  diagnosticQuestions String @default("[]") @map("diagnostic_questions")
+  questions      Question[]
+  interviewAttempts InterviewAttempt[]
+  shareToken     String?   @unique @map("share_token")
+  shareExpiresAt DateTime? @map("share_expires_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  @@index([shareToken])
+  @@map("reports")
+}
+
+model Question {
+  id          String @id @default(cuid())
+  reportId    String @map("report_id")
+  report      Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  index       Int
+  text        String
+  options     String? // JSON array of 4 option strings
+  category    String
+  difficulty  String
+  codeRef     String? @map("code_ref")     // specific function/file this references
+  modelAnswer String? @map("model_answer")
+  rubric      String?
+
+  @@index([reportId])
+  @@map("questions")
+}
+
+model InterviewAttempt {
+  id            String   @id @default(cuid())
+  reportId      String   @map("report_id")
+  report        Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  /// JSON: Array of { questionId, questionText, selectedOption, selectedIndex }
+  submittedAnswers String @map("submitted_answers")
+  /// 0–100 final interview score from LLM
+  interviewScore   Float?  @map("interview_score")
+  /// JSON: Array of { questionId, isCorrect, explanation, correctAnswer }
+  evaluationResult String? @map("evaluation_result")
+  /// Free-text feedback summary from LLM
+  feedbackSummary  String? @map("feedback_summary")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([reportId])
+  @@map("interview_attempts")
+}
+

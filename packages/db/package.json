@@ -1,0 +1,42 @@
+{
+  "name": "@code-analyzer/db",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
+    },
+    "./repositories": {
+      "types": "./dist/repositories/index.d.ts",
+      "default": "./dist/repositories/index.js"
+    }
+  },
+  "scripts": {
+    "build": "prisma generate && tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "test": "vitest run",
+    "clean": "rimraf dist .turbo node_modules"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.16.0",
+    "@code-analyzer/shared": "*"
+  },
+  "devDependencies": {
+    "prisma": "^5.16.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0",
+    "rimraf": "^5.0.0"
+  }
+}

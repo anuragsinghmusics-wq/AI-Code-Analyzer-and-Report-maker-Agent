@@ -1,0 +1,29 @@
+{
+  "name": "@code-analyzer/pipeline",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist node_modules"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.113.0",
+    "@code-analyzer/parser": "*",
+    "@code-analyzer/shared": "*",
+    "@langchain/core": "^1.2.3",
+    "@langchain/langgraph": "^1.4.8",
+    "js-tiktoken": "^1.0.21",
+    "openai": "^6.48.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0"
+  }
+}
