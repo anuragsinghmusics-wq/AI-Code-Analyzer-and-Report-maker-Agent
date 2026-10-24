@@ -17,20 +17,30 @@ let providersInitialized = false;
 const initProviders = () => {
   if (providersInitialized) return;
   
-  if (config.NVIDIA_API_KEY) {
-    availableProviders.push({
-      id: 'nvidia',
-      client: new OpenAI({ baseURL: 'https://integrate.api.nvidia.com/v1', apiKey: config.NVIDIA_API_KEY }),
-      model: 'meta/llama-3.1-70b-instruct'
+  if (config.GROQ_API_KEY) {
+    const keys = config.GROQ_API_KEY.split(',').map(k => k.trim()).filter(Boolean);
+    keys.forEach((key, index) => {
+      // Primary 120B model on Groq
+      availableProviders.push({
+        id: `groq-120b-${index + 1}`,
+        client: new OpenAI({ baseURL: 'https://api.groq.com/openai/v1', apiKey: key }),
+        model: 'openai/gpt-oss-120b'
+      });
+      // Fast 20B fallback on Groq
+      availableProviders.push({
+        id: `groq-20b-${index + 1}`,
+        client: new OpenAI({ baseURL: 'https://api.groq.com/openai/v1', apiKey: key }),
+        model: 'openai/gpt-oss-20b'
+      });
+      // Qwen fallback on Groq
+      availableProviders.push({
+        id: `groq-qwen-${index + 1}`,
+        client: new OpenAI({ baseURL: 'https://api.groq.com/openai/v1', apiKey: key }),
+        model: 'qwen/qwen3.8-27b'
+      });
     });
   }
-  if (config.OPENROUTER_API_KEY) {
-    availableProviders.push({
-      id: 'openrouter',
-      client: new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: config.OPENROUTER_API_KEY, defaultHeaders: { 'HTTP-Referer': 'https://deebug.analyzer', 'X-Title': 'Deebug Code Analyzer' } }),
-      model: 'google/gemini-2.5-flash'
-    });
-  }
+
   if (config.GOOGLE_API_KEY) {
     availableProviders.push({
       id: 'google',
@@ -38,29 +48,28 @@ const initProviders = () => {
       model: 'gemini-2.5-flash'
     });
   }
-  if (config.OPENCODE_API_KEY) {
+
+  if (config.NVIDIA_API_KEY) {
     availableProviders.push({
-      id: 'opencode',
-      client: new OpenAI({ baseURL: 'https://opencode.ai/zen/v1', apiKey: config.OPENCODE_API_KEY }),
-      model: 'deepseek-v4-flash-free'
+      id: 'nvidia',
+      client: new OpenAI({ baseURL: 'https://integrate.api.nvidia.com/v1', apiKey: config.NVIDIA_API_KEY }),
+      model: 'meta/llama-3.1-70b-instruct'
     });
   }
-  if (config.GROQ_API_KEY) {
-    const keys = config.GROQ_API_KEY.split(',').map(k => k.trim()).filter(Boolean);
-    keys.forEach((key, index) => {
-      availableProviders.push({
-        id: `groq-${index + 1}`,
-        client: new OpenAI({ baseURL: 'https://api.groq.com/openai/v1', apiKey: key }),
-        model: 'llama-3.3-70b-versatile'
-      });
+
+  if (config.OPENROUTER_API_KEY) {
+    availableProviders.push({
+      id: 'openrouter',
+      client: new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: config.OPENROUTER_API_KEY, defaultHeaders: { 'HTTP-Referer': 'https://deebug.analyzer', 'X-Title': 'Deebug Code Analyzer' } }),
+      model: 'google/gemini-2.5-flash'
     });
   }
 
   if (availableProviders.length === 0) {
     availableProviders.push({
-      id: 'openrouter-default',
-      client: new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: process.env.OPENROUTER_API_KEY || 'YOUR_OPENROUTER_KEY_HERE' }),
-      model: 'google/gemini-2.5-flash'
+      id: 'groq-default',
+      client: new OpenAI({ baseURL: 'https://api.groq.com/openai/v1', apiKey: (process.env.GROQ_API_KEY || config.GROQ_API_KEY || '').split(',')[0].trim() }),
+      model: 'openai/gpt-oss-120b'
     });
   }
   providersInitialized = true;
@@ -100,7 +109,7 @@ export async function callLLM(
           max_tokens: maxTokens,
           temperature,
           messages: [
-            { role: 'system', content: systemPrompt + '\n\nCRITICAL INSTRUCTION: You MUST NOT think for more than 500 tokens. Output the JSON array IMMEDIATELY. Keep your <think> block extremely short. If you think too long, you will run out of tokens and the system will crash!' },
+            { role: 'system', content: systemPrompt + '\n\nCRITICAL INSTRUCTION: You MUST output ONLY valid JSON conforming to the requested schema. Do NOT include any explanations, conversational text, or thoughts. Start your response directly with { or [.' },
             { role: 'user', content: truncatedPrompt }
           ],
         }),
@@ -118,6 +127,7 @@ export async function callLLM(
       log.info({
         event: 'llm_call_complete',
         providerId: provider.id,
+        model: provider.model,
         inputTokens: response.usage?.prompt_tokens || 0,
         outputTokens: response.usage?.completion_tokens || 0,
         durationMs: Date.now() - start,
@@ -126,17 +136,17 @@ export async function callLLM(
       return text;
     } catch (error: any) {
       attempt++;
-      log.warn({ attempt, providerId: provider.id, error: error.message }, 'LLM call failed');
+      log.warn({ attempt, providerId: provider.id, model: provider.model, error: error.message }, 'LLM call failed');
       
-      if (error.message?.includes('429') || error.message?.toLowerCase().includes('rate limit') || error.status === 429) {
-        // Rotate to the next available provider on rate limit
-        log.warn(`Rate limit hit on ${provider.id}. Switching to next API provider...`);
+      // Auto-failover: rotate to next available provider on ANY failure (404, 401, 400, 429, timeout, etc.)
+      if (availableProviders.length > 1) {
+        log.warn(`Rotating from ${provider.id} to next provider due to error: ${error.message}`);
         provider = getClientAndModel(true);
-        await sleep(2000);
-        if (attempt < maxAttempts) continue;
+      }
 
+      if (error.message?.includes('429') || error.message?.toLowerCase().includes('rate limit') || error.status === 429) {
         const match = error.message?.match(/try again in (\d+(?:\.\d+)?)s/i);
-        const waitSeconds = match ? Math.ceil(parseFloat(match[1])) + 2 : 15;
+        const waitSeconds = match ? Math.ceil(parseFloat(match[1])) + 1 : 3;
         log.warn({ attempt, waitSeconds, error: error.message }, `Rate limit encountered. Waiting ${waitSeconds}s before retrying...`);
         if (attempt < maxAttempts) {
           await sleep(waitSeconds * 1000);
@@ -145,7 +155,7 @@ export async function callLLM(
       }
 
       if (attempt === maxAttempts) throw error;
-      await sleep(Math.min(Math.pow(2, attempt) * 1000, 30_000));
+      await sleep(Math.min(attempt * 1000, 10_000));
     }
   }
   throw new Error(`LLM call failed after ${maxAttempts} attempts`);

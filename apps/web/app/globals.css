@@ -1,35 +1,35 @@
-﻿/* app/globals.css — Design system CSS variables matching the Deebug dark UI */
+/* app/globals.css — Design system CSS variables for crisp White & Emerald Green UI with maximum text contrast */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --bg-base:        #09090f;
-    --bg-elevated:    #0f0f1c;
-    --bg-overlay:     #16162a;
-    --bg-card:        rgba(255,255,255,0.03);
-    --border:         rgba(255,255,255,0.08);
-    --border-subtle:  rgba(255,255,255,0.05);
-    --text-primary:   #e8e8f0;
-    --text-secondary: #9090b0;
-    --text-muted:     #50507a;
-    --accent:         #7c3aed;
-    --accent-hover:   #8b5cf6;
-    --accent-subtle:  rgba(124,58,237,0.12);
-    --accent-cyan:    #06b6d4;
-    --grade-a:        #22c55e;
-    --grade-b:        #3b82f6;
-    --grade-c:        #f59e0b;
-    --grade-d:        #f97316;
-    --grade-f:        #ef4444;
-    --success:        #22c55e;
-    --warning:        #f59e0b;
-    --danger:         #ef4444;
-    --info:           #06b6d4;
+    --bg-base:        #ffffff;
+    --bg-elevated:    #fbfbfa;
+    --bg-overlay:     #f4f4f5;
+    --bg-card:        #ffffff;
+    --border:         #e4e4e7;
+    --border-subtle:  #f4f4f5;
+    --text-primary:   #09090b;
+    --text-secondary: #27272a;
+    --text-muted:     #52525b;
+    --accent:         #059669;
+    --accent-hover:   #047857;
+    --accent-subtle:  rgba(5, 150, 105, 0.08);
+    --accent-mint:    #10b981;
+    --grade-a:        #059669;
+    --grade-b:        #10b981;
+    --grade-c:        #d97706;
+    --grade-d:        #ea580c;
+    --grade-f:        #dc2626;
+    --success:        #059669;
+    --warning:        #d97706;
+    --danger:         #dc2626;
+    --info:           #059669;
   }
 
-  html { color-scheme: dark; }
+  html { color-scheme: light; }
 
   body {
     background-color: var(--bg-base);
@@ -43,11 +43,12 @@
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(124,58,237,0.3) transparent;
+    scrollbar-color: rgba(5, 150, 105, 0.35) transparent;
   }
-  *::-webkit-scrollbar { width: 4px; height: 4px; }
-  *::-webkit-scrollbar-track { background: transparent; }
-  *::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.35); border-radius: 10px; }
+  *::-webkit-scrollbar { width: 5px; height: 5px; }
+  *::-webkit-scrollbar-track { background: #fbfbfa; }
+  *::-webkit-scrollbar-thumb { background: rgba(5, 150, 105, 0.35); border-radius: 10px; }
+  *::-webkit-scrollbar-thumb:hover { background: rgba(5, 150, 105, 0.55); }
 }
 
 @layer utilities {
@@ -58,8 +59,7 @@
   .glass-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
   }
 
   .border-default { border-color: var(--border); }
@@ -68,13 +68,13 @@
   .text-secondary { color: var(--text-secondary); }
   .text-muted     { color: var(--text-muted); }
   .score-green    { color: var(--grade-a); }
-  .score-blue     { color: var(--grade-b); }
+  .score-mint     { color: var(--grade-b); }
   .score-amber    { color: var(--grade-c); }
   .score-orange   { color: var(--grade-d); }
   .score-red      { color: var(--grade-f); }
   .font-code { font-family: var(--font-jetbrains-mono), monospace; }
   .progress-bar-fill {
-    background: linear-gradient(90deg, #7c3aed, #06b6d4);
-    box-shadow: 0 0 12px rgba(124,58,237,0.5);
+    background: linear-gradient(90deg, #047857, #059669, #10b981);
+    box-shadow: 0 0 10px rgba(5, 150, 105, 0.35);
   }
 }

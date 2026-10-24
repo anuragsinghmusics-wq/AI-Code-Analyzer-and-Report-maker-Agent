@@ -58,14 +58,19 @@ function parseLLMJson<T>(raw: string, schema: z.ZodSchema<T>): T {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { reportId, submittedAnswers } = body as {
-      reportId: string;
-      submittedAnswers: SubmittedAnswer[];
-    };
+    const reportId = body.reportId;
+    const submittedAnswers: SubmittedAnswer[] = body.submittedAnswers || body.answers;
 
-    if (!reportId || !submittedAnswers || submittedAnswers.length === 0) {
+    if (!reportId) {
       return NextResponse.json(
-        { error: "reportId and submittedAnswers are required." },
+        { error: "Report ID is required to evaluate the interview." },
+        { status: 400 }
+      );
+    }
+
+    if (!submittedAnswers || submittedAnswers.length === 0) {
+      return NextResponse.json(
+        { error: "Please answer the interview questions before submitting." },
         { status: 400 }
       );
     }
@@ -113,7 +118,7 @@ Return ONLY this exact JSON:
 
     const client = getClient();
     const response = await client.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       max_tokens: 4096,
       temperature: 0.1,
       messages: [

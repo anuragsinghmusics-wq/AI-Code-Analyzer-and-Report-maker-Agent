@@ -34,3 +34,8 @@ packages/db/prisma/migrations/
 
 # Ignore uploads
 apps/web/uploads/
+
+# Agent configurations
+.agents/
+.gravitas/
+skills-lock.json

@@ -67,6 +67,18 @@ model Report {
   improvements   String                               
   fileBreakdown  String    @map("file_breakdown")   
   diagnosticQuestions String @default("[]") @map("diagnostic_questions")
+  /// JSON: Array of { question, answer } from Developer Pitch panel
+  pitchAnswers   String?   @map("pitch_answers")
+  /// 0–10 float score for the Developer Pitch / candidate defense
+  pitchScore     Float?    @map("pitch_score")
+  /// Letter grade for pitch (A+, A, B+, …)
+  pitchGrade     String?   @map("pitch_grade")
+  /// LLM-written paragraph feedback on the candidate's answers
+  pitchFeedback  String?   @map("pitch_feedback")
+  /// Weighted composite score (code 65% + pitch 35%)
+  compositeScore Float?    @map("composite_score")
+  /// Letter grade for composite
+  compositeGrade String?   @map("composite_grade")
   questions      Question[]
   interviewAttempts InterviewAttempt[]
   shareToken     String?   @unique @map("share_token")

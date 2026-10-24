@@ -9,27 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Background Layer — from design.md §2
-        'bg-base':     '#0D1117',
-        'bg-elevated': '#161B22',
-        'bg-overlay':  '#21262D',
+        // Background Layer
+        'bg-base':     '#ffffff',
+        'bg-elevated': '#fbfbfa',
+        'bg-overlay':  '#f4f4f5',
 
-        // Borders — from design.md §2
-        'border-default': '#30363D',
-        'border-subtle':  '#21262D',
+        // Borders
+        'border-default': '#e4e4e7',
+        'border-subtle':  '#f4f4f5',
 
-        // Text — from design.md §2
-        'text-primary':   '#E6EDF3',
-        'text-secondary': '#8B949E',
-        'text-muted':     '#484F58',
+        // Text
+        'text-primary':   '#09090b',
+        'text-secondary': '#27272a',
+        'text-muted':     '#52525b',
 
-        // Accent & Status — from design.md §2
-        accent:  '#2F81F7',
-        'accent-hover': '#388BFD',
-        success: '#3FB950',
-        warning: '#D29922',
-        danger:  '#F85149',
-        info:    '#58A6FF',
+        // Accent & Status
+        accent:  '#059669',
+        'accent-hover': '#047857',
+        'accent-mint': '#10b981',
+        success: '#059669',
+        warning: '#d97706',
+        danger:  '#dc2626',
+        info:    '#059669',
       },
       fontFamily: {
         mono: ['var(--font-jetbrains-mono)', 'JetBrains Mono', 'Fira Code', 'monospace'],
@@ -45,10 +46,10 @@ const config: Config = {
         '3xl':  ['72px', { lineHeight: '1.0' }],
       },
       borderColor: {
-        DEFAULT: '#30363D',
+        DEFAULT: '#e4e4e7',
       },
       backgroundColor: {
-        DEFAULT: '#0D1117',
+        DEFAULT: '#ffffff',
       },
     },
   },
