@@ -1,251 +1,191 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/Deebug-AI%20Code%20Analyzer-6d28d9?style=for-the-badge&logo=sparkles&logoColor=white" alt="Deebug" />
+<img src="https://img.shields.io/badge/Deebug-AI%20Code%20Review%20Engine-059669?style=for-the-badge&logo=codeforces&logoColor=white" alt="Deebug" />
 
-# ?? Deebug — AI Code Analyzer & Report Card Agent
+# Deebug â€” AI Code Analyzer & Report Card Agent
 
-**An autonomous, enterprise-grade AI platform that deeply analyzes your codebase across 8 parallel review dimensions and generates a strict, numeric Executive Report Card.**
+**An autonomous, full-stack AI engineering platform that performs multi-phase static and LLM analysis on codebases, delivers strict numeric report cards, and challenges developers with interactive technical interviews.**
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![LangGraph](https://img.shields.io/badge/LangGraph-JS-f59e0b?style=flat-square&logo=langchain&logoColor=white)](https://github.com/langchain-ai/langgraphjs)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-JS-059669?style=flat-square&logo=langchain&logoColor=white)](https://github.com/langchain-ai/langgraphjs)
 [![Turborepo](https://img.shields.io/badge/Turborepo-Monorepo-ef4444?style=flat-square&logo=turborepo&logoColor=white)](https://turbo.build/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-8b5cf6?style=flat-square)](CONTRIBUTING.md)
 
 <br/>
 
-> **Submit any codebase** — GitHub URL, ZIP file, or single files — and receive a detailed, evidence-backed Report Card with numeric grades (0–10), detected bugs with line numbers, actionable architectural improvements, and AI-generated interview questions in minutes.
+> **Submit any codebase** â€” via GitHub repository URL, uploaded ZIP file, or direct code paste â€” and receive an evidence-backed Report Card with category grades (0â€“10), AST complexity metrics, detected bugs, and an interactive technical interview to defend your design choices.
 
 <br/>
 
-[?? Quick Start](#-quick-start) · [?? See Results](#-sample-results) · [??? Architecture](#-architecture) · [?? Pipeline](#-8-phase-analysis-pipeline) · [?? Packages](#-monorepo-packages)
+[Quick Start](#-quick-start) â€¢ [Live Screenshots](#-live-screenshots) â€¢ [Architecture](#-architecture) â€¢ [Analysis Pipeline](#-13-phase-analysis-pipeline) â€¢ [Evaluation & Scoring](#-scoring-rubric--weights) â€¢ [Tech Stack](#-tech-stack)
 
 </div>
 
 ---
 
-## ? What Makes Deebug Different?
+## âš¡ Highlights & Real Features
 
 | Feature | Description |
 |---|---|
-| ?? **8 Parallel AI Reviewers** | Architecture, Security, Performance, Logic, Quality, Bug Hunting, Data Flow & Design run concurrently via LangGraph |
-| ?? **Strict Numeric Grading** | A+/A/B/C/D/F grades with weighted category scores (0.0 – 10.0), not just generic feedback |
-| ?? **AST-Level Parsing** | Tree-sitter static analysis extracts functions, classes, cyclomatic complexity & dependency graphs *before* any LLM call |
-| ?? **AI-Agent Aware** | Detects LangGraph, RAG, and tool-calling patterns — then triggers specialized multi-agent architectural evaluations |
-| ? **Real-time Progress** | Server-Sent Events stream live pipeline progress to the UI as each phase completes |
-| ?? **AI Interview Generator** | Automatically generates tailored diagnostic interview questions based on the exact bugs found in *your* code |
-| ?? **Score Reasoning** | Every grade includes a `scoreReasoning` field explaining *why* each point was deducted |
+| **Multi-Source Code Ingestion** | Ingest public GitHub repositories, multi-file `.zip` archives, or quick-paste code snippets into memory. |
+| **AST-Level Static Analysis** | Tree-sitter static analysis extracts functions, classes, cyclomatic complexity, and dependency graphs *before* any LLM call. |
+| **Multi-Stage LLM Evaluation** | LangGraph pipeline orchestrates parallel reviewers covering Architecture, Security, Performance, Data Flow, Logic, and Code Quality. |
+| **Multi-Provider LLM Failover** | Auto-rotates between primary high-capacity models (Groq `openai/gpt-oss-120b`), fast fallbacks (`openai/gpt-oss-20b`, `qwen/qwen3.8-27b`), and OpenRouter/Google Gemini endpoints. |
+| **Real-Time Live Tracker** | Server-Sent Events (SSE) stream phase-by-phase execution progress (1â€“13 phases) with automated completion handling. |
+| **Parallel Developer Pitch** | While code is analyzed, custom architectural and trade-off defense questions are formulated in real-time. Includes **Speech-to-Text Microphone** voice recording and composite grading (Code Audit 65% + Defense 35%). |
+| **Interactive Technical Interview** | 10 codebase-tailored MCQs generated directly from your code, evaluated with instant AI scoring (0â€“100), per-question correctness, and qualitative feedback. |
+| **Strict Numeric Grading** | A/B/C/D/F grades with weighted 10-category scoring (0.0 to 10.0), detailed score deduction reasoning, and drilldown findings. |
 
 ---
 
-## ?? Screenshots
+## ðŸ“¸ Live Screenshots
 
-### ?? Report Card Dashboard
-![Report Card Dashboard](docs/images/dashboard.jpg)
+### 1. Dashboard & Analysis Launcher
+Submit repositories, upload archive packages, or paste code directly into the review workspace.
+![Dashboard Home](docs/images/dashboard_home.png)
 
-### ?? Live Analysis Pipeline
-![Live pipeline tracker](docs/images/pipeline.jpg)
+### 2. Live Progress Tracker & Parallel Developer Pitch
+Real-time SSE progress streaming through all 13 analysis phases, paired with real-time architectural defense questions and speech-to-text mic input.
+![Live Progress Tracker](docs/images/live_progress.png)
 
-### ??? System Architecture
-![System architecture diagram](docs/images/architecture.jpg)
+### 3. Executive Code Analysis Report Card
+Comprehensive 10-category breakdown with overall numeric score ring, letter grade, and architectural evaluation.
+![Executive Report Card](docs/images/report_card.png)
 
----
-
-## ?? Sample Results
-
-Here is Deebug grading a **real-world RAG pipeline project**:
-
-```
-+----------------------------------------------------------+
-¦           DEEBUG EXECUTIVE REPORT CARD                  ¦
-¦           Project: rag_using_langchain                  ¦
-¦----------------------------------------------------------¦
-¦  Overall Score: 5.8 / 10.0          Grade: C+           ¦
-¦---------------------------------------------------------¦
-¦ Category               ¦ Score ¦ Grade                  ¦
-¦------------------------+-------+------------------------¦
-¦ Architecture           ¦  6.1  ¦  B-                    ¦
-¦ Security               ¦  3.9  ¦  D+   ?? CRITICAL      ¦
-¦ Performance            ¦  6.8  ¦  B-                    ¦
-¦ Maintainability        ¦  5.5  ¦  C+                    ¦
-¦ Scalability            ¦  6.2  ¦  B-                    ¦
-¦ Error Handling         ¦  4.2  ¦  D+   ?? WARNING       ¦
-¦ Code Quality           ¦  6.5  ¦  B-                    ¦
-¦ Readability            ¦  7.1  ¦  B                     ¦
-¦ Testing                ¦  2.0  ¦  F    ?? CRITICAL      ¦
-¦ Documentation          ¦  5.8  ¦  C+                    ¦
-+---------------------------------------------------------+
-```
-
-### ?? Detected Issues (Sample)
-
-<details>
-<summary><strong>?? Security — Hardcoded API Credentials (CRITICAL)</strong></summary>
-
-```
-File: src/utils/llm.ts  Line: 62
-Issue: API key hardcoded directly in source code.
-Fix:   Use process.env.OPENROUTER_API_KEY and store in .env
-Severity: CRITICAL | Category: Security
-```
-</details>
-
-<details>
-<summary><strong>?? Architecture — Missing Error Boundaries (HIGH)</strong></summary>
-
-```
-File: src/pipeline/graph.ts  Line: 89
-Issue: LangGraph nodes do not catch LLM timeout exceptions.
-       Chain failure propagates and crashes the entire pipeline.
-Fix:   Wrap each node in try/catch with graceful fallback state.
-Severity: HIGH | Category: Architecture
-```
-</details>
-
-<details>
-<summary><strong>?? Performance — Synchronous File I/O in Hot Path (MEDIUM)</strong></summary>
-
-```
-File: src/parser/extractor.ts  Line: 34
-Issue: fs.readFileSync() called inside a loop over 150+ files.
-       Blocks the event loop and degrades throughput by ~60%.
-Fix:   Replace with Promise.all(files.map(f => fs.readFile(f)))
-Severity: MEDIUM | Category: Performance
-```
-</details>
-
-### ?? Auto-Generated Interview Questions (Sample)
-
-> Based on the bugs found, Deebug generated these diagnostic questions:
-
-1. *"Your pipeline stores raw LLM API keys in `llm.ts`. Walk me through a secure secrets management strategy for a production Node.js service."*
-2. *"Explain why synchronous `fs.readFileSync` in a loop is problematic in a Node.js event loop. How would you refactor this?"*
-3. *"Your LangGraph pipeline has no error boundaries on individual nodes. What happens if the `bug-hunting` node times out mid-run? How do you design for partial failure?"*
+### 4. Interactive Technical Interview Results
+Automated grading of candidate answers with overall score (0â€“100), correct/incorrect metrics, and qualitative evaluator feedback.
+![Interactive Technical Interview Results](docs/images/interactive_interview.png)
 
 ---
 
-## ??? Architecture
+## ðŸ—ï¸ Architecture
 
 ```
 +-----------------------------------------------------------------+
-¦                        Deebug Platform                          ¦
-+-----------------------------------------------------------------¦
-¦   Input Sources  ¦   GitHub URL  ¦  ZIP Upload  ¦  File Upload  ¦
+|                        Deebug Platform                          |
 +-----------------------------------------------------------------+
-         ¦
-         ?
+|   Input Sources  |   GitHub URL  |  ZIP Upload  |  Code Editor  |
 +-----------------------------------------------------------------+
-¦            @code-analyzer/web  (Next.js 14 Frontend)            ¦
-¦  NextAuth Auth  ¦  Submission UI  ¦  SSE Progress  ¦  Dashboard  ¦
+                                |
+                                v
 +-----------------------------------------------------------------+
-         ¦ BullMQ Job
-         ?
+|            @code-analyzer/web  (Next.js 14 Frontend)            |
+|   Tailwind CSS  |  SSE Progress  |  Microphone STT | Dashboard  |
 +-----------------------------------------------------------------+
-¦          @code-analyzer/worker  (Node.js Background)            ¦
-¦              Decoupled job processor via ioredis                 ¦
+                                | Database Polling / BullMQ
+                                v
 +-----------------------------------------------------------------+
-         ¦ Executes
-         ?
+|          @code-analyzer/worker  (Node.js Background)            |
+|             Isolated background job execution runner            |
 +-----------------------------------------------------------------+
-¦         @code-analyzer/pipeline  (LangGraph State Machine)      ¦
-¦                                                                  ¦
-¦  [Parse AST] --> [File Analysis] --> [7 Parallel Deep Dives]    ¦
-¦                                              ¦                   ¦
-¦                          +-------------------¦                   ¦
-¦                     Architecture    Security    Performance      ¦
-¦                     DataFlow        Logic       Design           ¦
-¦                     Quality         BugHunting                  ¦
-¦                          +-------------------¦                   ¦
-¦                                              ?                   ¦
-¦                    [AI-Agent Review] --> [Report Card] --> [Save]¦
+                                |
+                                v
 +-----------------------------------------------------------------+
-         ¦ Saves to
-         ?
+|         @code-analyzer/pipeline  (LangGraph Pipeline)           |
+|                                                                 |
+|   [Tree-sitter AST] -> [File Analysis] -> [Parallel Reviews]   |
+|                                                  |              |
+|                              +-------------------+              |
+|                         Architecture    Security                |
+|                         Performance     Data Flow               |
+|                         Logic           Quality                 |
+|                              +-------------------+              |
+|                                                  |              |
+|                                                  v              |
+|                [Diagnostic Synthesis] -> [Report Card] -> [DB]  |
 +-----------------------------------------------------------------+
-¦         @code-analyzer/db  (Prisma + PostgreSQL/SQLite)         ¦
+                                |
+                                v
++-----------------------------------------------------------------+
+|             @code-analyzer/db  (Prisma ORM + SQLite)            |
 +-----------------------------------------------------------------+
 ```
 
 ---
 
-## ?? 8-Phase Analysis Pipeline
+## ðŸ”„ 13-Phase Analysis Pipeline
 
-Each submission flows through a LangGraph directed state machine:
+Every code submission flows through a LangGraph directed state machine:
 
 ```mermaid
 graph TD
-    A["?? Ingest & Parse"] --> B["?? Build AST + Dep Graph"]
-    B --> C["?? File-Level Analysis"]
-    C --> D{"?? Parallel Deep Dives"}
-    D --> E["??? Architecture Review"]
-    D --> F["?? Security & Bug Hunting"]
-    D --> G["? Performance Review"]
-    D --> H["?? Data Flow Analysis"]
-    D --> I["?? Logic Inspection"]
-    D --> J["? Quality Review"]
-    D --> K["?? Design Review"]
-    E & F & G & H & I & J & K --> L{"?? AI-Agent Review?"}
-    L -->|"If AI Framework detected"| M["?? Specialized AI Eval"]
-    L -->|"Otherwise"| N["?? Executive Report Card"]
-    M --> N
-    N --> O["?? Interview Question Gen"]
-    O --> P["?? Save to Database"]
+    A["1. Ingest Repository / File"] --> B["2. Parse Tree-sitter AST"]
+    B --> C["3. File-by-File Analysis"]
+    C --> D{"4. Parallel Deep Dives"}
+    D --> E["Architecture Review"]
+    D --> F["Data Flow Analysis"]
+    D --> G["Logic & Edge-case Review"]
+    D --> H["Quality & Style Review"]
+    D --> I["Bug Hunting & Security"]
+    D --> J["Performance Analysis"]
+    D --> K["Design Analysis"]
+    E & F & G & H & I & J & K --> L["11. Diagnostic Synthesis"]
+    L --> M["12. Generate Interview Q+A"]
+    M --> N["13. Compile Executive Report Card"]
+    N --> O["Save to Database & Stream Ready"]
 ```
 
 | Phase | Description |
-|-------|-------------|
-| **1. Ingest** | Clones GitHub repo / extracts ZIP, resolves all file paths |
-| **2. Parse** | Tree-sitter AST extraction of functions, classes, imports, cyclomatic complexity |
-| **3. Dependency Graph** | Builds directed dependency graph, detects circular imports |
-| **4. File Analysis** | Per-file responsibility, public API design, complexity rating |
-| **5–11. Parallel Deep Dives** | 7 concurrent AI reviewers: Architecture, Security, Performance, Logic, Quality, Bug Hunting, Design |
-| **12. AI-Agent Review** | *Conditional:* Triggers for LangGraph, RAG, tool-calling patterns |
-| **13. Diagnostics** | Synthesizes top findings into diagnostic evidence |
-| **14. Report Card** | Generates final numeric grades with written score reasoning |
-| **15. Question Gen** | Creates tailored interview questions based on bugs found |
+|---|---|
+| **1. Ingest** | Clones the GitHub repo, extracts the `.zip` archive, or writes snippet to isolated disk sandbox. |
+| **2. Parse AST** | Tree-sitter parses TypeScript, JavaScript, Python, Go, and Java into structured syntax trees. |
+| **3. File Analysis** | Calculates file responsibilities, public APIs, and complexity metrics. |
+| **4â€“10. Deep Dives** | Parallel LLM reviewer nodes assess architecture, data flow, logic, quality, bugs, performance, and design. |
+| **11. Diagnostics** | Synthesizes top critical findings and generates evidence anchors. |
+| **12. Interview Q+A** | Formulates 10 targeted multiple-choice technical interview questions based on the candidate's code. |
+| **13. Report Card** | Calculates weighted category scores, assigns final letter grade, and stores the completed report in SQLite. |
 
 ---
 
-## ?? Monorepo Packages
+## ðŸ“Š Scoring Rubric & Weights
 
-```
-?? deebug/
-+-- ?? apps/
-¦   +-- web/          ? Next.js 14 frontend (submission UI + dashboard)
-¦   +-- worker/       ? Node.js background job processor (BullMQ)
-¦
-+-- ?? packages/
-    +-- pipeline/     ? LangGraph AI state machine (8 reviewer nodes)
-    +-- parser/       ? Tree-sitter AST static analysis
-    +-- db/           ? Prisma ORM (PostgreSQL / SQLite)
-    +-- shared/       ? Types, scoring constants, grade rubrics
-```
+Each project is evaluated across 10 distinct software engineering dimensions:
 
-### Scoring Categories & Weights
-
-| Category | Weight | What It Measures |
+| Category | Weight | Evaluates |
 |---|---|---|
-| ??? Architecture | **15%** | Design patterns, layering, coupling |
-| ?? Security | **15%** | Vulnerabilities, auth flaws, injection risks |
-| ? Performance | **12%** | Bottlenecks, O(n²), N+1 queries, memory |
-| ?? Maintainability | **12%** | Modularity, coupling, technical debt |
-| ?? Scalability | **10%** | Statelessness, horizontal scaling readiness |
-| ??? Error Handling | **10%** | try/catch coverage, graceful degradation |
-| ? Code Quality | **8%** | Rigor, consistency, naming |
-| ?? Readability | **7%** | Clarity, comments, self-documentation |
-| ?? Testing | **6%** | Coverage, test types, assertions |
-| ?? Documentation | **5%** | README, JSDoc, API docs |
+| **Architecture** | **15%** | Separation of concerns, module boundaries, architectural patterns |
+| **Security** | **15%** | Input validation, sanitization, secret management, OWASP risks |
+| **Performance** | **12%** | Algorithmic efficiency, memory allocations, caching, query patterns |
+| **Maintainability** | **12%** | Code organization, coupling, cyclomatic complexity, refactoring ease |
+| **Scalability** | **10%** | Statelessness, concurrent execution readiness, resource handling |
+| **Error Handling** | **10%** | Exception safety, edge-case coverage, graceful degradation |
+| **Code Quality** | **8%** | Idiomatic conventions, DRY compliance, type rigor |
+| **Readability** | **7%** | Naming clarity, cognitive load, documentation alignment |
+| **Testing** | **6%** | Testability, unit/integration assertions, boundary validation |
+| **Documentation** | **5%** | Inline docstrings, architectural intent, setup clarity |
+
+### Grade Scale
+- **A+ / A (9.0â€“10.0)**: Production-grade, highly modular, rigorous error handling and security practices.
+- **B+ / B (7.5â€“8.9)**: Strong foundation, clean idioms, minor performance or testing gaps.
+- **C+ / C (6.0â€“7.4)**: Average implementation; functioning but lacks modularity, tests, or defensive guards.
+- **D (5.0â€“5.9)**: Significant architectural flaws, missing error handling, or unvalidated input flows.
+- **F (< 5.0)**: Critical security risks, syntax failures, or unstructured spaghetti code.
 
 ---
 
-## ?? Quick Start
+## ðŸ“¦ Monorepo Structure
+
+```
+deebug/
+â”œâ”€â”€ apps/
+â”‚   â”œâ”€â”€ web/               # Next.js 14 frontend (Tailwind CSS, SSE streaming, Speech STT)
+â”‚   â””â”€â”€ worker/            # Node.js background worker (Prisma DB polling & BullMQ)
+â””â”€â”€ packages/
+    â”œâ”€â”€ pipeline/          # LangGraph state machine, LLM failover, prompts & review nodes
+    â”œâ”€â”€ parser/            # Tree-sitter AST static analysis & complexity parser
+    â”œâ”€â”€ db/                # Prisma ORM schema & SQLite database client
+    â””â”€â”€ shared/            # Shared TypeScript interfaces, types, and grading rubrics
+```
+
+---
+
+## ðŸš€ Quick Start
 
 ### Prerequisites
-- Node.js >= 20.0.0
-- npm >= 9.0.0
-- Redis (for BullMQ job queue)
-- PostgreSQL or SQLite (for Prisma)
+- **Node.js** >= 20.0.0
+- **npm** >= 10.0.0
+- A **Groq**, **OpenRouter**, or **Google Gemini** API key
 
 ### 1. Clone the Repository
 
@@ -260,109 +200,74 @@ cd AI-Code-Analyzer-and-Report-maker-Agent
 npm install
 ```
 
-### 3. Configure Environment
+### 3. Configure Environment Variables
 
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your API keys:
+Create `.env` in the root (or copy from `.env.example`):
 
 ```env
-# AI Providers (at least one required)
-OPENROUTER_API_KEY=sk-or-v1-...
-GROQ_API_KEY=gsk_...
+# AI Providers (At least one required)
+GROQ_API_KEY=gsk_your_groq_api_key_here
+OPENROUTER_API_KEY=sk-or-your_openrouter_key_here
+GOOGLE_API_KEY=your_gemini_api_key_here
 
-# Database
-DATABASE_URL="file:./prisma/codeanalyzer.db"   # SQLite (local dev)
-# DATABASE_URL="postgresql://..."               # PostgreSQL (production)
+# Database (Default: local SQLite database)
+DATABASE_URL="file:./prisma/codeanalyzer.db"
 
-# Auth
-NEXTAUTH_SECRET=your-secret-here
+# Web App Configuration
+NEXTAUTH_SECRET=deebug-super-secret-key-change-me
 NEXTAUTH_URL=http://localhost:3000
-
-# Redis
-REDIS_URL=redis://localhost:6379
 ```
 
-### 4. Initialize Database
+### 4. Initialize Database & Generate Prisma Client
 
 ```bash
 cd packages/db
-npx prisma migrate dev
+npx prisma generate
+npx prisma db push
 cd ../..
 ```
 
-### 5. Start All Services
+### 5. Start Development Server
 
 ```bash
-# Terminal 1 — Start Redis (via Docker)
-docker-compose up -d redis
-
-# Terminal 2 — Start everything
 npm run dev
 ```
 
-This launches:
-- **Web** ? http://localhost:3000
-- **Worker** ? Background job processor
+This starts both services concurrently via Turborepo:
+- **Next.js Web Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Background Worker**: Database polling & code analysis runner
 
 ---
 
-## ??? Tech Stack
+## ðŸ› ï¸ Tech Stack
 
-| Layer | Technology |
+| Layer | Technologies |
 |---|---|
-| **Frontend** | Next.js 14, React 18, Tailwind CSS, NextAuth |
-| **Backend** | Node.js, BullMQ, ioredis |
+| **Frontend** | Next.js 14 (App Router), React 18, Tailwind CSS, Web Speech API (STT), Lucide Icons |
+| **Backend & Worker** | Node.js, TSX, Prisma ORM, BullMQ / SQLite DB Polling |
 | **AI Orchestration** | LangGraph JS, LangChain Core |
-| **LLM Providers** | Groq (Llama 3.3 70B), OpenRouter, Anthropic |
-| **Static Analysis** | Tree-sitter (TypeScript, Python, Go, Java) |
-| **Database** | Prisma ORM + PostgreSQL / SQLite |
-| **Monorepo** | Turborepo + npm workspaces |
-| **Validation** | Zod, TypeScript 5 |
-| **Logging** | Pino |
+| **LLM Models** | Groq (`openai/gpt-oss-120b`, `openai/gpt-oss-20b`, `qwen/qwen3.8-27b`), OpenRouter, Gemini |
+| **Static Analysis** | Tree-sitter (TypeScript, Python, JavaScript, Go, Java) |
+| **Monorepo Tools** | Turborepo, npm workspaces, TypeScript 5.5 |
 
 ---
 
-## ?? Roadmap
+## ðŸ¤ Contributing
 
-- [ ] **Multi-Agent Debate** — Security Hacker agent vs. Staff Architect agent debate findings before assigning final grade
-- [ ] **Auto-Remediation** — Generate verified GitHub PRs with bug fixes and unit tests
-- [ ] **Mega-Repo Support** — Semantic embeddings + graph-based trimming for repos > 50K LOC
-- [ ] **Custom Rules** — Accept `.deebug-rules.yaml` contracts from hackathon organizers or enterprises
-- [ ] **VS Code Extension** — Run Deebug analysis directly from the editor
-- [ ] **Webhook Integrations** — Trigger analysis automatically on GitHub PR events
-
----
-
-## ?? Contributing
-
-Contributions are welcome! Please open an issue first to discuss what you would like to change.
-
-```bash
-# Fork ? Clone ? Create feature branch
-git checkout -b feat/my-awesome-feature
-
-# Commit with conventional commits
-git commit -m "feat: add multi-agent debate node"
-
-# Push & open a PR
-git push origin feat/my-awesome-feature
-```
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feat/my-enhancement`)
+3. Commit your changes (`git commit -m "feat: add multi-file diff viewer"`)
+4. Push to the branch (`git push origin feat/my-enhancement`)
+5. Open a Pull Request
 
 ---
 
-## ?? License
+## ðŸ“„ License
 
 This project is licensed under the [MIT License](LICENSE).
 
----
-
 <div align="center">
 
-**Built with ?? by [Harsh](https://github.com/anuragsinghmusics-wq)**
-
-? **Star this repo if you found it useful!** ?
+**Developed with precision for modern software engineering reviews.**
 
 </div>
